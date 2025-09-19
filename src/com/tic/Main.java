@@ -10,7 +10,55 @@ public class Main {
 
     }
 
-    public static boolean ticTacToe(String[][] menu, String response, String[][] game, String player) {
+
+    public static boolean checkVictory(String[][] game, String player) {
+
+        //check horizontal
+        for (int i = 0; i < 3; i++) {
+            int count = 0;
+            for (int j = 0; j < 3; j++) {
+                if (game[i][j].equals(player)) {
+                    count++;
+                }
+            }
+            if (count == 3) return true;
+        }
+
+        //check vertical
+        for (int i = 0; i < 3; i++) {
+            int count = 0;
+            for (int j = 0; j < 3; j++) {
+                if (game[j][i].equals(player)) {
+                    count++;
+                }
+            }
+            if (count == 3) return true;
+        }
+
+        //check diagonal
+        int count = 0;
+        for (int i = 0, j = 2; i < 3; i++, j--) {
+
+            if (game[j][i].equals(player)) {
+                count++;
+
+            }
+            if (count == 3) return true;
+        }
+
+        count = 0;
+        for (int i = 0; i < 3; i++) {
+
+            if (game[i][i].equals(player)) {
+                count++;
+
+            }
+            if (count == 3) return true;
+        }
+        return false;
+    }
+
+    public static boolean markTicTacToe(String[][] menu, String response, String[][] game, String player) {
         for (int i = 0; i < menu.length; i++) {
 
             for (int j = 0; j < menu[i].length; j++) {
@@ -33,7 +81,7 @@ public class Main {
     }
 
 
-    public static void ticTacToe(String[][] game) {
+    public static void printTicTacToe(String[][] game) {
 
         for (int i = 0; i < game.length; i++) {
 
@@ -55,7 +103,7 @@ public class Main {
 
     public static void menuRules(String[][] menu) {
 
-        ticTacToe(menu);
+        printTicTacToe(menu);
         System.out.println("-".repeat(30));
         System.out.println("Escolha um numero para marca-lo");
         System.out.println("Tente marcar uma linha de 3");
@@ -68,7 +116,7 @@ public class Main {
     public static void play(String player, String[][] game, String[][] menu, Scanner scanner) {
         boolean flag = true;
         while (flag) {
-            ticTacToe(game);
+            printTicTacToe(game);
             System.out.println("-".repeat(10));
 
             System.out.print("Escolha um numero:");
@@ -82,7 +130,7 @@ public class Main {
                     scanner.nextLine();
                 } else {
 
-                    flag = ticTacToe(menu, response, game, player);
+                    flag = markTicTacToe(menu, response, game, player);
 
                 }
             } catch (NumberFormatException e) {
@@ -108,11 +156,33 @@ public class Main {
         String player = "X";
         String player2 = "0";
         menuRules(menu);
-        boolean noWinners = true;
-        while (noWinners) {
+        boolean winner = false;
+        int playCount = 0;
+        while (!winner) {
             play(player, game, menu, scanner);
+            winner = checkVictory(game, player);
+            playCount++;
+            if (winner) {
+                System.out.println("player 1: " + player + " won");
+                printTicTacToe(game);
+                continue;
+            }
+            if (playCount == 9) {
+                System.out.println("Draw");
+                printTicTacToe(game);
+                winner = true;
+                continue;
+            }
             play(player2, game, menu, scanner);
+            winner = checkVictory(game, player2);
+            if (winner) {
+                System.out.println("player 2: " + player2 + " won");
+                printTicTacToe(game);
+
+            }
+            playCount++;
         }
+
     }
 
 
