@@ -59,11 +59,13 @@ public class Main {
 
     }
 
-    public static boolean avoidEnemyVictory(String[][] menu, String[][] game, String player, String pc) {
+    // this method plays defensively
+    public static boolean pcPlays(String[][] menu, String[][] game, String player, String pc) {
 
         boolean victory = false;
         //check horizontal
         for (int i = 0; i < 3; i++) {
+            victory = false;
             int count = 0;
             for (int j = 0; j < 3; j++) {
                 if (game[i][j].equals(player)) {
@@ -73,32 +75,32 @@ public class Main {
 
 
                 }
-                    if(victory && game[i][j].equals(" ")){
-                        game[i][j] = pc;
-                        menu[i][j] = pc;
-                        System.out.println("marquei hori linha : " + i + " coluna: " +j ); // retirar depois
-                        return true;
-                    }
+                if (victory && game[i][j].equals(" ")) {
+                    game[i][j] = pc;
+                    menu[i][j] = pc;
+                    System.out.println("marquei hori linha : " + i + " coluna: " + j); // retirar depois
+                    return true;
+                }
 
-                    if (count == 2 && !victory) {
-                        j = -1;
-                        victory = true;
-                    }
+                if (count == 2 && !victory) {
+                    j = -1;
+                    victory = true;
+                }
             }
         }
 
         //check vertical
-        victory = false;
         for (int i = 0; i < 3; i++) {
+            victory = false;
             int count = 0;
             for (int j = 0; j < 3; j++) {
                 if (game[j][i].equals(player)) {
                     count++;
                 }
-                if(victory && game[j][i].equals(" ")){
+                if (victory && game[j][i].equals(" ")) {
                     game[j][i] = pc;
                     menu[j][i] = pc;
-                    System.out.println("marquei verti linha : " + i + " coluna: " +j ); // retirar depois
+                    System.out.println("marquei verti linha : " + i + " coluna: " + j); // retirar depois
                     return true;
                 }
 
@@ -119,10 +121,10 @@ public class Main {
                 count++;
 
             }
-            if(victory && game[j][i].equals(" ")){
+            if (victory && game[j][i].equals(" ")) {
                 game[j][i] = pc;
                 menu[j][i] = pc;
-                System.out.println("marquei ali linha : " + i + " coluna: " +j ); // retirar depois
+                System.out.println("marquei ali linha : " + i + " coluna: " + j); // retirar depois
                 return true;
             }
 
@@ -142,10 +144,10 @@ public class Main {
                 count++;
 
             }
-            if(victory && game[i][i].equals(" ")){
+            if (victory && game[i][i].equals(" ")) {
                 game[i][i] = pc;
                 menu[i][i] = pc;
-                System.out.println("marquei aqui linha : " + i + " coluna: " +i); // retirar depois
+                System.out.println("marquei aqui linha : " + i + " coluna: " + i); // retirar depois
                 return true;
             }
 
@@ -157,6 +159,122 @@ public class Main {
         }
         return false;
 
+    }
+
+    // this method plays offensively
+    public static boolean pcPlays(String[][] menu, String[][] game, String pc) {
+
+        boolean victory = false;
+        //check horizontal
+        for (int i = 0; i < 3; i++) {
+            victory = false;
+            int count = 0;
+            for (int j = 0; j < 3; j++) {
+                if (game[i][j].equals(pc)) {
+                    count++;
+
+                    // mark
+
+
+                }
+                if (victory && game[i][j].equals(" ")) {
+                    game[i][j] = pc;
+                    menu[i][j] = pc;
+                    System.out.println("marquei hori linha : " + i + " coluna: " + j); // retirar depois
+                    return true;
+                }
+
+                if (count == 2 && !victory) {
+                    j = -1;
+                    victory = true;
+                }
+            }
+        }
+
+        //check vertical
+        for (int i = 0; i < 3; i++) {
+            victory = false;
+            int count = 0;
+            for (int j = 0; j < 3; j++) {
+                if (game[j][i].equals(pc)) {
+                    count++;
+                }
+                if (victory && game[j][i].equals(" ")) {
+                    game[j][i] = pc;
+                    menu[j][i] = pc;
+                    System.out.println("marquei verti linha : " + i + " coluna: " + j); // retirar depois
+                    return true;
+                }
+
+                if (count == 2 && !victory) {
+                    j = -1;
+                    victory = true;
+                }
+
+            }
+        }
+
+        //check diagonal
+        victory = false;
+        int count = 0;
+        for (int i = 0, j = 2; i < 3; i++, j--) {
+
+            if (game[j][i].equals(pc)) {
+                count++;
+
+            }
+            if (victory && game[j][i].equals(" ")) {
+                game[j][i] = pc;
+                menu[j][i] = pc;
+                System.out.println("marquei ali linha : " + i + " coluna: " + j); // retirar depois
+                return true;
+            }
+
+            if (count == 2 && !victory) {
+                j = 3;
+                i = -1;
+                victory = true;
+            }
+
+        }
+
+        count = 0;
+        victory = false;
+        for (int i = 0; i < 3; i++) {
+
+            if (game[i][i].equals(pc)) {
+                count++;
+
+            }
+            if (victory && game[i][i].equals(" ")) {
+                game[i][i] = pc;
+                menu[i][i] = pc;
+                System.out.println("marquei aqui linha : " + i + " coluna: " + i); // retirar depois
+                return true;
+            }
+
+            if (count == 2 && !victory) {
+                i = -1;
+                victory = true;
+            }
+
+        }
+        return false;
+
+    }
+
+    public static boolean pcInitialPlays(String[][] menu, String[][] game, String player, String pc) {
+        if (game[1][1].equals(" ")) {
+            game[1][1] = pc;
+            return true;
+        } else if (game[0][1].equals(" ")) {
+            game[0][1] = pc;
+            return true;
+        } else if (game[1][0].equals(" ")) {
+            game[1][0] = pc;
+            return true;
+        }
+        return false;
     }
 
     public static boolean markTicTacToe(String[][] menu, String response, String[][] game, String player) {
@@ -180,7 +298,6 @@ public class Main {
         }
         return true;
     }
-
 
     public static void printTicTacToe(String[][] game) {
 
@@ -264,23 +381,29 @@ public class Main {
             winner = checkVictory(game, player);
             playCount++;
             if (winner) {
+                System.out.println();
                 System.out.println("player 1: " + player + " won");
                 printTicTacToe(game);
                 continue;
             }
             if (playCount == 9) {
-                System.out.println("Draw");
+                System.out.println();
+                System.out.println("Empate!");
                 printTicTacToe(game);
                 winner = true;
                 continue;
             }
 
-            if(!avoidEnemyVictory(menu,game,player, player2)) {
+            if (!pcPlays(menu, game, player2)) { // plays offensively if 2, marks 3
+                if (!pcPlays(menu, game, player, player2)) { // plays defense to avoid losing
 
-            play(player2, game, menu, scanner);
+//                    play(player2, game, menu, scanner);
+                    pcInitialPlays(menu, game, player, player2);
+                }
             }
             winner = checkVictory(game, player2);
             if (winner) {
+                System.out.println();
                 System.out.println("player 2: " + player2 + " won");
                 printTicTacToe(game);
 
